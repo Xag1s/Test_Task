@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "tech-tast"
+version = "0.1.0"
+description = ""
+authors = ["Stepan Kindrat <xag1058@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "^3.1.0"
+python-dotenv = "^1.0.1"
+flask-sqlalchemy = "^3.1.1"
+flask-jwt-extended = "^4.7.1"
+flask-cors = "^5.0.0"
+psycopg2 = "^2.9.10"
+flasgger = "^0.9.7.1"
+sqlalchemy = "^2.0.36"
+alembic = "^1.14.0"
+mypy = "^1.13.0"
+black = "^24.10.0"
+pytest-cov = "^6.0.0"
+pytest-mock = "^3.14.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
