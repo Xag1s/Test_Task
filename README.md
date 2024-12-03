@@ -1,11 +1,12 @@
 # Test Task
 
-## Clone the Repository
+## Installation
+### Clone the Repository
 Clone this repository to your local machine:
 ```commandline
 git clone https://github.com/stepankindrat/Test_Task.git
 ```
-## Create a `.env` file
+### Create a `.env` file
 Create a .env file in the root directory with the following content:
 ```
 JWT_SECRET_KEY="default_secret_key"

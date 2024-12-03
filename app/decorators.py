@@ -2,6 +2,7 @@ from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 from flask import abort
 from functools import wraps
 from .models import User
+from .extensions import db
 
 
 def check_access(roles):
@@ -11,7 +12,7 @@ def check_access(roles):
             verify_jwt_in_request()
 
             user_id = get_jwt_identity()
-            user = User.query.get(user_id)
+            user = db.session.get(User, user_id)
 
             if user.role not in roles:
                 abort(403, description="Access denied")
