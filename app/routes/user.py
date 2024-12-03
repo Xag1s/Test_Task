@@ -28,7 +28,7 @@ def get_all_users():
 
 # POST add a new user
 @user_bp.route("/", methods=["POST"])
-#@check_access(roles=['Admin'])
+@check_access(roles=['Admin'])
 def add_new_user():
     if (
         not request.json

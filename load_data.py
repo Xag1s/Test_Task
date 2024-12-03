@@ -7,8 +7,9 @@ from werkzeug.security import generate_password_hash
 
 result = os.scandir("sql_commands")
 
-
 with app.app_context():
+    db.create_all()
+    db.session.commit()
 
     user_admin = User(username='User-Admin', password=generate_password_hash('admin'), role='Admin')
     user_editor = User(username='User-Editor', password=generate_password_hash('editor'), role='Editor')

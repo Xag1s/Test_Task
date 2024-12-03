@@ -6,6 +6,11 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 article_bp = Blueprint("article", __name__)
 
 
+@article_bp.route('/home')
+def home():
+    return jsonify({"Text": "Hello world"})
+
+
 # GET all articles
 @article_bp.route("/", methods=["GET"])
 def get_all_articles():
