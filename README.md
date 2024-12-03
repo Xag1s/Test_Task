@@ -27,7 +27,7 @@ Run the following command to set up the database:
 ```commandline
 docker compose exec app python load_data.py
 ```
-After executing the command, four articles and three users will be created with the following parameters:
+After executing the command, four articles and three users will be created with the following user data::
 ```commandline
 username: User-Admin
 password: admin
