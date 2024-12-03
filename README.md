@@ -55,6 +55,6 @@ docker compose exec app flask create-user <username> <password> <role>
 ```
 Run following command to clean up the database
 ```commandline
-docker compose exec app flask reser-db
+docker compose exec app flask reset-db
 ```
 
