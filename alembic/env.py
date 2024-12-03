@@ -10,10 +10,11 @@ import os
 
 load_dotenv()
 
-url = "postgresql://{username}:{password}@db:5432/{database}".format(
+url = "postgresql://{username}:{password}@{host}:5432/{database}".format(
         username=os.getenv("POSTGRES_USER"),
         password=os.getenv("POSTGRES_PASSWORD"),
-        database=os.getenv("POSTGRES_DB")
+        database=os.getenv("POSTGRES_DB"),
+        host=os.getenv("POSTGRES_HOST")
     )
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
