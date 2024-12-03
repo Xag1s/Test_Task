@@ -15,6 +15,10 @@ jobs:
     - name: docker compose up
       env:
         COMPOSE_INTERACTIVE_NO_CLI: 1
+        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       run: docker compose up -d
     - name: Check running containers
       run: docker compose ps -a
