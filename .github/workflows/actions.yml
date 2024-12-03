@@ -1,0 +1,26 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Flask application
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker compose up
+      env:
+        COMPOSE_INTERACTIVE_NO_CLI: 1
+      run: docker compose up -d
+    - name: Check running containers
+      run: docker compose ps -a
+    - name: Check logs
+      run: docker compose logs app
+    - name: Test with pytest
+      env:
+        COMPOSE_INTERACTIVE_NO_CLI: 1
+      run: docker compose exec app pytest
