@@ -3,6 +3,7 @@ from app.models import User
 from app.extensions import db
 from werkzeug.security import generate_password_hash
 from app.decorators import check_access
+from flasgger import swag_from
 
 user_bp = Blueprint('users', __name__)
 
@@ -10,7 +11,8 @@ user_bp = Blueprint('users', __name__)
 # GET user by id
 @user_bp.route("/<int:user_id>", methods=["GET"])
 @check_access(['Admin'])
-def get_users(user_id):
+@swag_from("app/swagger_config.yml", endpoint='get_user_by_id', methods=["GET"])
+def get_user_by_id(user_id):
     user = db.session.get(User, user_id)
     if user is None:
         abort(404, description="User not found")
@@ -21,6 +23,7 @@ def get_users(user_id):
 # Get list of all users
 @user_bp.route("/", methods=["GET"])
 @check_access(['Admin'])
+@swag_from("app/swagger_config.yml", endpoint='get_all_user', methods=["GET"])
 def get_all_users():
     users = User.query.all()
     return jsonify({'users': [user.to_dict() for user in users]}), 200
@@ -29,6 +32,7 @@ def get_all_users():
 # POST add a new user
 @user_bp.route("/", methods=["POST"])
 @check_access(roles=['Admin'])
+@swag_from("app/swagger_config.yml", endpoint='add_new_user', methods=["GET"])
 def add_new_user():
     if (
         not request.json
@@ -51,6 +55,7 @@ def add_new_user():
 # PUT update a user
 @user_bp.route("/<int:user_id>", methods=["PUT"])
 @check_access(roles=['Admin'])
+@swag_from("app/swagger_config.yml", endpoint='update_user', methods=["PUT"])
 def update_user(user_id):
     user = db.session.get(User, user_id)
     if user is None:
@@ -74,6 +79,7 @@ def update_user(user_id):
 
 # DELETE user
 @user_bp.route("/<int:user_id>", methods=["DELETE"])
+@swag_from("app/swagger_config.yml", endpoint='delete_user', methods=["DELETE"])
 @check_access(roles=['Admin'])
 def delete_user(user_id):
     user = db.session.get(User, user_id)

@@ -1,0 +1,432 @@
+swagger: "2.0"
+info:
+  title: 'Blog API'
+  description: 'API for managing a blog'
+  version: '1.0.0'
+host: '127.0.0.1:5000'
+basePath: '/'
+schemes:
+  - 'http'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+
+paths:
+  /articles:
+    get:
+      summary: "Return all articles"
+      responses:
+        200:
+          description: 'A list of all articles'
+          content:
+            application/json:
+              example:
+                article:
+                  - id: 1
+                    title: "Lorem ipsum dolor sit."
+                    author: "User-Admin"
+                    text: "Lorem ipsum dolor sit amet,"
+                  - id: 2
+                    title: "Lorem ipsum dolor sit."
+                    author: "User-Editor"
+                    text: "Some text"
+    post:
+      summary: 'Added a new article'
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: "body"
+          name: "article"
+          description: "Article information"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              title:
+                type: "string"
+              text:
+                type: "string"
+            example:
+              title: "Title"
+              text: "Some text"
+        - in: "header"
+          name: "Authorization"
+          description: "Bearer token for authorization"
+          required: true
+          schema:
+            type: "string"
+            example: "Bearer <JWT_TOKEN>"
+      responses:
+        201:
+          description: 'A newly added article'
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                description: "Automatically generated article ID"
+              title:
+                type: "string"
+              text:
+                type: "string"
+              author:
+                type: "string"
+            example:
+              id: 1
+              title: "Lorem ipsum dolor sit."
+              author: "User-Admin"
+              text: "Lorem ipsum dolor sit amet,"
+        401:
+          description: 'Unauthorized user'
+        400:
+          description: 'Invalid data provided'
+  /articles/{article_id}:
+    get:
+      summary: "Return article by id"
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "article_id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "ID of the article to retrieve"
+        - in: "header"
+          name: "Authorization"
+          description: "Bearer token for authorization"
+          required: true
+          schema:
+            type: "string"
+            example: "Bearer <JWT_TOKEN>"
+      responses:
+        200:
+          description: 'Information about the article'
+          content:
+            application/json:
+              example:
+                article:
+                  - id: 1
+                    title: "Lorem ipsum dolor sit."
+                    author: "User-Admin"
+                    text: "Lorem ipsum dolor sit amet,"
+                  - id: 2
+                    title: "Some title"
+                    author: "User-Editor"
+                    text: "Some text"
+        401:
+          description: "Unauthorized user"
+        404:
+          description: 'Article not found'
+    put:
+      summary: 'Update the article'
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "article_id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "ID of the article to update"
+        - in: "body"
+          name: "article"
+          description: "Updated article information"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              title:
+                type: "string"
+              text:
+                type: "string"
+            example:
+              title: "New title"
+              text: "New text"
+        - in: "header"
+          name: "Authorization"
+          description: "Bearer token for authorization"
+          required: true
+          schema:
+            type: "string"
+            example: "Bearer <JWT_TOKEN>"
+      responses:
+        200:
+          description: 'A newly added article'
+          content:
+            application/json:
+              example:
+                id: 1
+                title: "Lorem ipsum dolor sit."
+                author: "User-Admin"
+                text: "Lorem ipsum dolor sit amet,"
+        400:
+          description: 'Invalid data provided'
+        401:
+          description: "Unauthorized user"
+        404:
+          description: 'Article not found'
+    delete:
+      summary: 'Delete article by id'
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "article_id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "ID of the article to delete"
+        - in: "header"
+          name: "Authorization"
+          description: "Bearer token for authorization"
+          required: true
+          schema:
+            type: "string"
+            example: "Bearer <JWT_TOKEN>"
+      responses:
+        200:
+          description: 'Article successfully deleted'
+        401:
+          description: "Unauthorized user"
+        404:
+          description: 'Article not found'
+  /articles/search:
+    summary: 'Search article by text'
+    parameters:
+      - name: "text"
+        in: "path"
+        required: true
+        type: "String"
+        description: "Text to search for an article"
+      - in: "header"
+        name: "Authorization"
+        description: "Bearer token for authorization"
+        required: true
+        schema:
+          type: "string"
+          example: "Bearer <JWT_TOKEN>"
+    responses:
+      200:
+        description: "The article was found"
+        content:
+          application/json:
+            example:
+              id: 1
+              title: "Lorem ipsum dolor sit."
+              author: "User-Admin"
+              text: "Lorem ipsum dolor sit amet,"
+      400:
+        description: "Missing data"
+      401:
+        description: "Unauthorized user"
+      404:
+        description: 'Article not found'
+  /login:
+    post:
+      summary: 'Login'
+      parameters:
+        - in: "body"
+          name: "login"
+          description: "Enter your username and password"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              username:
+                type: "string"
+              password:
+                type: "string"
+            example:
+              username: "Admin"
+              password: "12345"
+      responses:
+        200:
+          description: 'Created access token'
+          content:
+            application/json:
+              example:
+                access_token: "jwt_token"
+        401:
+          description: 'Invalid username or password'
+  /users/{user_id}:
+    get:
+      summary: "Return user data by id"
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "user_id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "ID of the user to retrieve"
+        - in: "header"
+          name: "Authorization"
+          description: "Bearer token for authorization"
+          required: true
+          schema:
+            type: "string"
+            example: "Bearer <JWT_TOKEN>"
+      responses:
+        200:
+          description: 'User data'
+          content:
+            application/json:
+              example:
+                article:
+                  - id: 1
+                    role: "Admin"
+                    username: "User-Admin"
+                  - id: 2
+                    role: "Editor"
+                    username: "User-Editor"
+        401:
+          description: "Unauthorized user"
+        404:
+          description: 'User not found'
+    put:
+      summary: "Update user data"
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "username"
+          in: "path"
+          required: true
+          type: "string"
+        - password: 'password'
+          in: "path"
+          required: true
+        - role: 'role'
+          in: "path"
+          required: true
+          type: ['Admin', 'Editor', 'Viewer']
+        - in: "header"
+          name: "Authorization"
+          description: "Bearer token for authorization"
+          required: true
+          schema:
+            type: "string"
+            example: "Bearer <JWT_TOKEN>"
+      responses:
+        200:
+          description: 'User was updated'
+          content:
+            application/json:
+              example:
+                article:
+                  - id: 1
+                    role: "Admin"
+                    username: "User-Admin"
+                  - id: 2
+                    role: "Editor"
+                    username: "User-Editor"
+        401:
+          description: "Unauthorized user"
+        404:
+          description: 'User not found'
+    delete:
+      summary: 'Delete user by id'
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "user_id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "ID of the user to delete"
+        - in: "header"
+          name: "Authorization"
+          description: "Bearer token for authorization"
+          required: true
+          schema:
+            type: "string"
+            example: "Bearer <JWT_TOKEN>"
+      responses:
+        200:
+          description: 'User successfully deleted'
+        400:
+          description: "Missing data"
+        401:
+          description: "Unauthorized user"
+        404:
+          description: 'Article not found'
+  /users:
+    get:
+      summary: "Return all users"
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: "header"
+          name: "Authorization"
+          description: "Bearer token for authorization"
+          required: true
+          schema:
+            type: "string"
+            example: "Bearer <JWT_TOKEN>"
+      responses:
+        200:
+          description: 'A list of all users'
+          content:
+            application/json:
+              example:
+                users:
+                  - id: 1
+                    role: 'Admin'
+                    username: 'User-Admin'
+                  - id: 2
+                    title: 'Editor'
+                    username: 'User-Editor'
+    post:
+      summary: 'Added a new user'
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: "body"
+          name: "user"
+          description: "Article information"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              username:
+                type: "string"
+              password:
+                type: "string"
+              role:
+                type: "string"
+            example:
+              username: "User-Admin"
+              password: "12345"
+              role: "Admin"
+        - in: "header"
+          name: "Authorization"
+          description: "Bearer token for authorization"
+          required: true
+          schema:
+            type: "string"
+            example: "Bearer <JWT_TOKEN>"
+      responses:
+        201:
+          description: 'A newly added user'
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                description: "Automatically generated article ID"
+              username:
+                type: "string"
+              role:
+                type: "string"
+            example:
+              id: 1
+              role: "Admin"
+              username: "User-Admin"
+        400:
+          description: 'Missing data for required fields'
+        401:
+          description: 'Unauthorized user'
+
+

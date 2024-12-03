@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
-from app.extensions import db, jwt
+from app.extensions import db, jwt, swagger
 from app.commands import create_user, reset_db
 
 
@@ -22,6 +22,7 @@ def create_app():
 
     db.init_app(app)
     jwt.init_app(app)
+    swagger.init_app(app)
 
     app.cli.add_command(commands.create_user)
     app.cli.add_command(commands.reset_db)

@@ -2,17 +2,14 @@ from flask import Blueprint, request, jsonify, abort
 from app.models import Articles, User
 from app.extensions import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flasgger import swag_from
 
 article_bp = Blueprint("article", __name__)
 
 
-@article_bp.route('/home')
-def home():
-    return jsonify({"Text": "Hello world"})
-
-
 # GET all articles
 @article_bp.route("/", methods=["GET"])
+@swag_from("app/swagger_config.yml", endpoint='get_all_articles', methods=["GET"])
 def get_all_articles():
     articles = Articles.query.all()
     return jsonify({"Articles": [article.to_dict() for article in articles]}), 200
@@ -21,7 +18,8 @@ def get_all_articles():
 # POST new articles
 @article_bp.route("/", methods=["POST"])
 @jwt_required()
-def add_new_articles():
+@swag_from("app/swagger_config.yml", endpoint='add_new_article', methods=["POST"])
+def add_new_article():
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
 
@@ -41,6 +39,7 @@ def add_new_articles():
 # Update articles
 @article_bp.route("/<int:article_id>", methods=["PUT"])
 @jwt_required()
+@swag_from("app/swagger_config.yml", endpoint='update_article', methods=["PUT"])
 def update_article(article_id):
     article = db.session.get(Articles, article_id)
     user_id = get_jwt_identity()
@@ -66,6 +65,7 @@ def update_article(article_id):
 # The admin can delete any article, and the viewer, the editor can delete only their own articles
 @article_bp.route("/<int:article_id>", methods=["DELETE"])
 @jwt_required()
+@swag_from("app/swagger_config.yml", endpoint='delete_article', methods=["DELETE"])
 def delete_article(article_id):
     article = db.session.get(Articles, article_id)
     user_id = get_jwt_identity()
@@ -85,6 +85,7 @@ def delete_article(article_id):
 
 # Search article by text
 @article_bp.route("/search", methods=["GET"])
+@swag_from("app/swagger_config.yml", endpoint='search_by_text', methods=["GET"])
 def search_by_text():
     if not request.json:
         abort(400, description="Missing data")

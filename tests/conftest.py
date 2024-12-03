@@ -4,7 +4,6 @@ import jwt
 from datetime import datetime, timedelta
 
 
-
 @pytest.fixture()
 def app():
     app = create_app()
