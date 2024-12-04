@@ -7,7 +7,7 @@ Clone this repository to your local machine:
 git clone https://github.com/stepankindrat/Test_Task.git
 ```
 ### Create a `.env` file
-Create a .env file in the root directory with the following content:
+Create a .env file in the root directory, example of `.env` file:
 ```
 JWT_SECRET_KEY="default_secret_key"
 POSTGRES_USER=user
