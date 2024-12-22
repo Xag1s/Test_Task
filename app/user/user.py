@@ -9,7 +9,7 @@ user_bp = Blueprint('users', __name__)
 
 
 # GET user by id
-@user_bp.route("/<int:user_id>", methods=["GET"])
+@user_bp.route("/users/<int:user_id>", methods=["GET"])
 @check_access(['Admin'])
 @swag_from("app/swagger_config.yml", endpoint='get_user_by_id', methods=["GET"])
 def get_user_by_id(user_id):
@@ -21,7 +21,7 @@ def get_user_by_id(user_id):
 
 
 # Get list of all users
-@user_bp.route("/", methods=["GET"])
+@user_bp.route("/users", methods=["GET"])
 @check_access(['Admin'])
 @swag_from("app/swagger_config.yml", endpoint='get_all_user', methods=["GET"])
 def get_all_users():
@@ -30,7 +30,7 @@ def get_all_users():
 
 
 # POST add a new user
-@user_bp.route("/", methods=["POST"])
+@user_bp.route("/users", methods=["POST"])
 @check_access(roles=['Admin'])
 @swag_from("app/swagger_config.yml", endpoint='add_new_user', methods=["GET"])
 def add_new_user():
@@ -53,7 +53,7 @@ def add_new_user():
 
 
 # PUT update a user
-@user_bp.route("/<int:user_id>", methods=["PUT"])
+@user_bp.route("/users/<int:user_id>", methods=["PUT"])
 @check_access(roles=['Admin'])
 @swag_from("app/swagger_config.yml", endpoint='update_user', methods=["PUT"])
 def update_user(user_id):
@@ -78,7 +78,7 @@ def update_user(user_id):
 
 
 # DELETE user
-@user_bp.route("/<int:user_id>", methods=["DELETE"])
+@user_bp.route("/users/<int:user_id>", methods=["DELETE"])
 @swag_from("app/swagger_config.yml", endpoint='delete_user', methods=["DELETE"])
 @check_access(roles=['Admin'])
 def delete_user(user_id):

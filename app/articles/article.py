@@ -8,7 +8,7 @@ article_bp = Blueprint("article", __name__)
 
 
 # GET all articles
-@article_bp.route("/", methods=["GET"])
+@article_bp.route("/articles", methods=["GET"])
 @swag_from("app/swagger_config.yml", endpoint='get_all_articles', methods=["GET"])
 def get_all_articles():
     articles = Articles.query.all()
@@ -16,7 +16,7 @@ def get_all_articles():
 
 
 # POST new articles
-@article_bp.route("/", methods=["POST"])
+@article_bp.route("/articles", methods=["POST"])
 @jwt_required()
 @swag_from("app/swagger_config.yml", endpoint='add_new_article', methods=["POST"])
 def add_new_article():
@@ -37,7 +37,7 @@ def add_new_article():
 
 
 # Update articles
-@article_bp.route("/<int:article_id>", methods=["PUT"])
+@article_bp.route("/articles/<int:article_id>", methods=["PUT"])
 @jwt_required()
 @swag_from("app/swagger_config.yml", endpoint='update_article', methods=["PUT"])
 def update_article(article_id):
@@ -63,7 +63,7 @@ def update_article(article_id):
 
 
 # The admin can delete any article, and the viewer, the editor can delete only their own articles
-@article_bp.route("/<int:article_id>", methods=["DELETE"])
+@article_bp.route("/articles/<int:article_id>", methods=["DELETE"])
 @jwt_required()
 @swag_from("app/swagger_config.yml", endpoint='delete_article', methods=["DELETE"])
 def delete_article(article_id):
@@ -84,7 +84,7 @@ def delete_article(article_id):
 
 
 # Search article by text
-@article_bp.route("/search", methods=["GET"])
+@article_bp.route("/articles/search", methods=["GET"])
 @swag_from("app/swagger_config.yml", endpoint='search_by_text', methods=["GET"])
 def search_by_text():
     if not request.json:

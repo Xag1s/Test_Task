@@ -8,7 +8,7 @@ auth_bp = Blueprint('login', __name__)
 
 
 # Login
-@auth_bp.route("/", methods=["POST"])
+@auth_bp.route("/login", methods=["POST"])
 @swag_from("app/swagger_config.yml", endpoint='login', methods=["POST"])
 def login():
     data = request.get_json()

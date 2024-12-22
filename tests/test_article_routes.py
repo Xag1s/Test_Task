@@ -31,7 +31,7 @@ def test_get_article_by_text(client):
     response = client.get(
         "/articles/search",
         json={"text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Al"},
-        follow_redirects=True,
+
     )
 
     expected_response = ["Lorem ipsum dolor sit amet."]

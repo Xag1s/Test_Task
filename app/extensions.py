@@ -4,4 +4,4 @@ from flasgger import Swagger
 
 db = SQLAlchemy()
 jwt = JWTManager()
-swagger = Swagger(template_file="swagger_config.yml")
+swagger = Swagger(template_file="swagger/swagger_config.yml")
